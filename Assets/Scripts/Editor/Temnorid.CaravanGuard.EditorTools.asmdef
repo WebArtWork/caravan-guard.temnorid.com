@@ -1,0 +1,23 @@
+{
+  "name": "Temnorid.CaravanGuard.EditorTools",
+  "rootNamespace": "Temnorid.CaravanGuard.EditorTools",
+  "references": [
+    "Temnorid.CaravanGuard",
+    "ITKamianets.Engine.Combat",
+    "ITKamianets.Engine.TopDown",
+    "ITKamianets.Engine.Feedback",
+    "ITKamianets.Engine.Graybox",
+    "ITKamianets.Engine.Graybox.Editor"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

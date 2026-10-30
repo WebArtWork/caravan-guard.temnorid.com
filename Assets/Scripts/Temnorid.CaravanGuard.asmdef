@@ -1,0 +1,27 @@
+{
+  "name": "Temnorid.CaravanGuard",
+  "rootNamespace": "Temnorid.CaravanGuard",
+  "references": [
+    "ITKamianets.Engine.Core",
+    "ITKamianets.Engine.Input",
+    "ITKamianets.Engine.Save",
+    "ITKamianets.Engine.Combat",
+    "ITKamianets.Engine.TopDown",
+    "Unity.InputSystem",
+    "UnityEngine.UI",
+    "ITKamianets.Engine.Feedback",
+    "ITKamianets.Engine.Graybox",
+    "ITKamianets.Engine.UI"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "Newtonsoft.Json.dll"
+  ],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

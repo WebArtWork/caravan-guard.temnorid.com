@@ -1,0 +1,19 @@
+{
+  "name": "Temnorid.CaravanGuard.Tests.PlayMode",
+  "rootNamespace": "Temnorid.CaravanGuard.Tests",
+  "references": [
+    "Temnorid.CaravanGuard",
+    "ITKamianets.Engine.Combat",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": ["nunit.framework.dll"],
+  "autoReferenced": false,
+  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
