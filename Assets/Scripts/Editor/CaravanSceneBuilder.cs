@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using ITKamianets.Engine.Combat;
 using ITKamianets.Engine.Graybox;
 using ITKamianets.Engine.Graybox.EditorTools;
+using ITKamianets.Engine.Shell.Editor;
 using ITKamianets.Engine.TopDown;
 using UnityEditor;
 using UnityEditor.Build;
@@ -34,9 +35,7 @@ namespace Temnorid.CaravanGuard.EditorTools
 		[MenuItem("Temnorid/CaravanGuard/Build Scene")]
 		public static void Build()
 		{
-			PlayerSettings.productName = "Temnorid Caravan Guard";
-			PlayerSettings.companyName = "Temnorid";
-			PlayerSettings.bundleVersion = "0.1.0";
+			ShellSceneKit.ApplyPlatformSettings("Temnorid", "Temnorid Caravan Guard", "com.itkamianets.caravanguard", "0.2.0");
 			PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Standalone, "com.itkamianets.caravanguard");
 			PlayerSettings.runInBackground = true;
 			PlayerSettings.fullScreenMode = FullScreenMode.FullScreenWindow;
@@ -65,7 +64,9 @@ namespace Temnorid.CaravanGuard.EditorTools
 			hud.Game = game;
 
 			EditorSceneManager.SaveScene(scene, ScenePath);
-			EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
+			ShellSceneKit.BuildBoot();
+			ShellSceneKit.BuildMenu();
+			ShellSceneKit.SetBuildOrder(ScenePath);
 			AssetDatabase.SaveAssets();
 			Debug.Log("[CaravanGuard] Scene built: " + ScenePath + " (road " + road.Length.ToString("0") + " m, " + pads.Length + " posts, " + points + ")");
 		}

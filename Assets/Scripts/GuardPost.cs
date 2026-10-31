@@ -1,5 +1,6 @@
 using ITKamianets.Engine.Combat;
 using ITKamianets.Engine.Feedback;
+using ITKamianets.Engine.Net;
 using UnityEngine;
 
 namespace Temnorid.CaravanGuard
@@ -54,7 +55,8 @@ namespace Temnorid.CaravanGuard
 			_nextShot = Time.time + GuardStats.Interval(Level);
 			var from = transform.position + Vector3.up * MuzzleHeight;
 			var to = target.transform.position + Vector3.up * 0.9f;
-			target.Health.ApplyDamage(new DamageInfo(GuardStats.Damage(Level), gameObject, to, "arrow"));
+			// Online, only the host's guards hurt anybody; a client's archers just shoot at what the host shows.
+			if (NetSession.Instance.IsAuthority) target.Health.ApplyDamage(new DamageInfo(GuardStats.Damage(Level), gameObject, to, "arrow"));
 			Tracer(from, to);
 		}
 

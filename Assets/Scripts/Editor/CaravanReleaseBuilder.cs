@@ -28,7 +28,7 @@ namespace Temnorid.CaravanGuard.EditorTools
 
 			var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
 			{
-				scenes = new[] { ScenePath },
+				scenes = EnabledScenes(),
 				locationPathName = PlayerFolder + "/" + ExeName,
 				target = BuildTarget.StandaloneWindows64,
 				options = BuildOptions.None,
@@ -47,6 +47,15 @@ namespace Temnorid.CaravanGuard.EditorTools
 			ZipFile.CreateFromDirectory(PlayerFolder, zip);
 
 			Debug.Log("[CaravanGuard] Windows build ready: " + PlayerFolder + "/" + ExeName + " (" + (report.summary.totalSize / (1024 * 1024)) + " MB), zip: " + zip);
+		}
+
+		// Boot and Menu come first, then the game: whatever the scene builder put in the build settings.
+		static string[] EnabledScenes()
+		{
+			var list = new System.Collections.Generic.List<string>();
+			foreach (var scene in EditorBuildSettings.scenes)
+				if (scene.enabled) list.Add(scene.path);
+			return list.ToArray();
 		}
 	}
 }

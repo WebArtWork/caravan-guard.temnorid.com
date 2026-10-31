@@ -4,6 +4,7 @@
   "references": [
     "Temnorid.CaravanGuard",
     "ITKamianets.Engine.Combat",
+    "ITKamianets.Engine.Net",
     "UnityEngine.TestRunner",
     "UnityEditor.TestRunner"
   ],

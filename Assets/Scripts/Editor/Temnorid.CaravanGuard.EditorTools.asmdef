@@ -7,7 +7,9 @@
     "ITKamianets.Engine.TopDown",
     "ITKamianets.Engine.Feedback",
     "ITKamianets.Engine.Graybox",
-    "ITKamianets.Engine.Graybox.Editor"
+    "ITKamianets.Engine.Graybox.Editor",
+    "ITKamianets.Engine.Shell",
+    "ITKamianets.Engine.Shell.Editor"
   ],
   "includePlatforms": [
     "Editor"

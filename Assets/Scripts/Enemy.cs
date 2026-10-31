@@ -24,6 +24,13 @@ namespace Temnorid.CaravanGuard
 		public EnemyStats Stats { get; private set; }
 
 		float _nextStrike;
+		bool _gone;
+
+		/// <summary>The same attacker on every machine of an online game. Set by the host when it spawns it.</summary>
+		public int NetId;
+
+		/// <summary>True for an attacker that only shows what the host simulates: it does not move, strike, pay or die by itself.</summary>
+		public bool Remote { get; private set; }
 
 		void Awake()
 		{
@@ -46,9 +53,29 @@ namespace Temnorid.CaravanGuard
 			_nextStrike = Time.time + Stats.Interval * UnityEngine.Random.Range(0.3f, 1f);
 		}
 
+		/// <summary>Makes this attacker a picture of the host's: the game moves it and sets its health.</summary>
+		public void MakeRemote() => Remote = true;
+
+		/// <summary>Shows the host's health for a remote attacker (it only ever goes down).</summary>
+		public void ShowHealth(float current)
+		{
+			var difference = Health.Current - current;
+			if (difference > 0.01f && current > 0f) Health.ApplyDamage(new DamageInfo(difference));
+		}
+
+		/// <summary>A remote attacker the host no longer has: it falls and goes.</summary>
+		public void Vanish()
+		{
+			if (_gone) return;
+			_gone = true;
+			All.Remove(this);
+			foreach (var collider in GetComponentsInChildren<Collider>()) collider.enabled = false;
+			StartCoroutine(Fall());
+		}
+
 		void Update()
 		{
-			if (!Health.IsAlive) return;
+			if (Remote || !Health.IsAlive) return;
 			var caravan = CaravanGame.Instance != null ? CaravanGame.Instance.Caravan : null;
 			if (caravan == null || !caravan.Health.IsAlive) return;
 
@@ -71,6 +98,12 @@ namespace Temnorid.CaravanGuard
 
 		void OnDied(Health health, DamageInfo info)
 		{
+			if (Remote)
+			{
+				Vanish();
+				return;
+			}
+			_gone = true;
 			All.Remove(this);
 			foreach (var collider in GetComponentsInChildren<Collider>()) collider.enabled = false;
 			Killed?.Invoke(this);

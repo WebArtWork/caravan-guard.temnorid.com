@@ -36,6 +36,15 @@ namespace Temnorid.CaravanGuard
 			Layout();
 		}
 
+		/// <summary>Online client: shows the host's caravan at <paramref name="progress"/> metres, stopping at <paramref name="stop"/>.</summary>
+		public void Show(float progress, float stop)
+		{
+			if (Road == null) return;
+			Progress = progress;
+			Stop = stop;
+			Layout();
+		}
+
 		/// <summary>Moves the lead wagon along the road toward <see cref="Stop"/>.</summary>
 		public void Advance(float deltaTime)
 		{
