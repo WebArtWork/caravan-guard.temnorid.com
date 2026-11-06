@@ -3,6 +3,7 @@
   "rootNamespace": "Temnorid.CaravanGuard.EditorTools",
   "references": [
     "Temnorid.CaravanGuard",
+    "Temnorid.Village",
     "ITKamianets.Engine.Combat",
     "ITKamianets.Engine.TopDown",
     "ITKamianets.Engine.Feedback",

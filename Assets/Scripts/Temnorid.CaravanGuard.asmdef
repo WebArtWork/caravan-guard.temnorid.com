@@ -13,6 +13,8 @@
     "ITKamianets.Engine.Graybox",
     "ITKamianets.Engine.UI",
     "ITKamianets.Engine.Shell",
+    "ITKamianets.Engine.Account",
+    "Temnorid.Village",
     "ITKamianets.Engine.Net",
     "ITKamianets.Engine.Update"
   ],

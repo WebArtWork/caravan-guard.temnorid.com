@@ -20,7 +20,10 @@ namespace Temnorid.CaravanGuard.EditorTools
 	/// </summary>
 	public static class CaravanSceneBuilder
 	{
-		const string ScenePath = "Assets/Scenes/Main.unity";
+		/// <summary>The first playable: one road, ten posts, three waves. Kept, but nothing leads to it now.</summary>
+		const string ScenePath = "Assets/Scenes/Waves.unity";
+		/// <summary>The trade road between the village and the town: where the game opens.</summary>
+		const string RealmPath = "Assets/Scenes/Main.unity";
 		const string MaterialDir = "Assets/Materials";
 
 		static readonly Vector3[] RoadPoints =
@@ -64,11 +67,39 @@ namespace Temnorid.CaravanGuard.EditorTools
 			hud.Game = game;
 
 			EditorSceneManager.SaveScene(scene, ScenePath);
+			BuildRealm();
 			ShellSceneKit.BuildBoot();
 			ShellSceneKit.BuildMenu();
-			ShellSceneKit.SetBuildOrder(ScenePath);
+			ShellSceneKit.SetBuildOrder(RealmPath, ScenePath);
 			AssetDatabase.SaveAssets();
 			Debug.Log("[CaravanGuard] Scene built: " + ScenePath + " (road " + road.Length.ToString("0") + " m, " + pads.Length + " posts, " + points + ")");
+		}
+
+		/// <summary>
+		/// The scene the game opens in: a wide ground, the camera and the light. The village, the town, the road, the guard posts, the traders and the
+		/// bandits are made when the game starts, by <see cref="RealmGame"/> (their size follows the village).
+		/// </summary>
+		static void BuildRealm()
+		{
+			var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+			RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
+			RenderSettings.ambientLight = new Color(0.6f, 0.62f, 0.68f);
+
+			Box(null, "Ground", new Vector3(200f, -0.4f, 0f), new Vector3(1000f, 0.5f, 700f), Mat("Grass", new Color(0.36f, 0.5f, 0.27f)));
+
+			var view = new GameObject("Village").AddComponent<Temnorid.Village.VillageView>();
+			view.LitTemplate = Mat("VillageLit", Color.white);
+			view.TextMaterial = GrayboxBuilder.WorldTextMaterial(Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"), MaterialDir);
+			var camera = BuildCameraAndLight();
+
+			var gameObject = new GameObject("Game");
+			var game = gameObject.AddComponent<RealmGame>();
+			game.View = camera;
+			game.Village = view;
+			game.TextMaterial = view.TextMaterial;
+			gameObject.AddComponent<RealmHud>().Game = game;
+
+			EditorSceneManager.SaveScene(scene, RealmPath);
 		}
 
 		// ---- terrain, road, gate ----

@@ -21,14 +21,13 @@ namespace Temnorid.CaravanGuard
 				Repo = Repo,
 				InstallerSuffix = "-Setup.exe",
 				MaxPlayers = 4,
-				Multiplayer = true,
+				// One player: sign in, then straight onto the trade road between the village and the town. No landing screen, no lobby,
+				// no Profile for now.
+				Multiplayer = false,
+				Profile = false,
+				SkipLanding = true,
 				GameScene = "Main",
 				Accent = new Color(0.29f, 0.565f, 0.72f),
-				Places =
-				{
-					new ShellPlace(DefencePlace, "Defence", "D"),
-					new ShellPlace(ArchersPlace, "Archers", "A"),
-				},
 			};
 		}
 	}

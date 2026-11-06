@@ -38,6 +38,7 @@ namespace Temnorid.CaravanGuard
 		{
 			Level = Mathf.Clamp(level, 0, GuardStats.MaxLevel);
 			if (EmptyMarker != null) EmptyMarker.SetActive(Level == 0);
+			if (LevelVisuals == null) return; // a post made in code is given its looks right after it is added
 			for (var i = 0; i < LevelVisuals.Length; i++) LevelVisuals[i].SetActive(Level == i + 1);
 		}
 
@@ -56,27 +57,29 @@ namespace Temnorid.CaravanGuard
 			var from = transform.position + Vector3.up * MuzzleHeight;
 			var to = target.transform.position + Vector3.up * 0.9f;
 			// Online, only the host's guards hurt anybody; a client's archers just shoot at what the host shows.
-			if (NetSession.Instance.IsAuthority) target.Health.ApplyDamage(new DamageInfo(GuardStats.Damage(Level), gameObject, to, "arrow"));
+			if (NetSession.Instance.IsAuthority) target.ApplyDamage(new DamageInfo(GuardStats.Damage(Level), gameObject, to, "arrow"));
 			Tracer(from, to);
 		}
 
-		Enemy Nearest()
+		/// <summary>The nearest attacker in range: an enemy of the waves, or a bandit of the trade road.</summary>
+		Health Nearest()
 		{
-			Enemy best = null;
+			Health best = null;
 			var bestSqr = Range * Range;
-			foreach (var enemy in Enemy.All)
-			{
-				if (!enemy.Health.IsAlive) continue;
-				var flat = enemy.transform.position - transform.position;
-				flat.y = 0f;
-				var sqr = flat.sqrMagnitude;
-				if (sqr <= bestSqr)
-				{
-					bestSqr = sqr;
-					best = enemy;
-				}
-			}
+			foreach (var enemy in Enemy.All) Consider(enemy.Health, enemy.transform, ref best, ref bestSqr);
+			foreach (var bandit in Bandit.All) Consider(bandit.Health, bandit.transform, ref best, ref bestSqr);
 			return best;
+		}
+
+		void Consider(Health health, Transform at, ref Health best, ref float bestSqr)
+		{
+			if (health == null || !health.IsAlive) return;
+			var flat = at.position - transform.position;
+			flat.y = 0f;
+			var sqr = flat.sqrMagnitude;
+			if (sqr > bestSqr) return;
+			bestSqr = sqr;
+			best = health;
 		}
 
 		static void Tracer(Vector3 from, Vector3 to)
